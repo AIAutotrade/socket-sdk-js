@@ -1,0 +1,445 @@
+/**
+ * @file Testing utilities for Socket SDK. Provides mock factories, response
+ *   builders, and test helpers for easier SDK testing.
+ */
+
+import type {
+  SocketSdkErrorResult,
+  SocketSdkGenericResult,
+  SocketSdkOperations,
+  SocketSdkResult,
+  SocketSdkSuccessResult,
+} from './types/core.mts'
+
+/**
+ * Type guard to check if SDK result is an error.
+ *
+ * @example
+ *   ;```ts
+ *   const result = await sdk.getRepo('org', 'repo')
+ *   if (isErrorResult(result)) {
+ *     console.error(result.error) // Type-safe access
+ *   }
+ *   ```
+ *
+ * @param result - SDK result to check.
+ *
+ * @returns True if result is an error
+ */
+export function isErrorResult<T>(
+  result: SocketSdkGenericResult<T>,
+): result is Extract<SocketSdkGenericResult<T>, { success: false }> {
+  return !result.success
+}
+
+/**
+ * Type guard to check if SDK result is successful.
+ *
+ * @example
+ *   ;```ts
+ *   const result = await sdk.getRepo('org', 'repo')
+ *   if (isSuccessResult(result)) {
+ *     console.log(result.data.name) // Type-safe access
+ *   }
+ *   ```
+ *
+ * @param result - SDK result to check.
+ *
+ * @returns True if result is successful
+ */
+export function isSuccessResult<T>(
+  result: SocketSdkGenericResult<T>,
+): result is Extract<SocketSdkGenericResult<T>, { success: true }> {
+  return result.success
+}
+
+/**
+ * Create a mock Socket API error response body.
+ *
+ * @example
+ *   ;```ts
+ *   nock('https://api.socket.dev')
+ *     .get('/v0/repo/org/repo')
+ *     .reply(404, mockApiErrorBody('Repository not found'))
+ *   ```
+ *
+ * @param message - Error message.
+ * @param details - Optional error details.
+ *
+ * @returns Socket API error response structure
+ */
+export function mockApiErrorBody(
+  message: string,
+  details?: Record<string, unknown> | undefined,
+): {
+  error: { message: string; details?: Record<string, unknown> | undefined }
+} {
+  return {
+    error: {
+      message,
+      ...(details ? { details } : {}),
+    },
+  }
+}
+
+/**
+ * Common fixture data for organization responses.
+ */
+export const organizationFixtures = {
+  /**
+   * Basic organization with minimal data.
+   */
+  basic: {
+    id: 'org_123',
+    name: 'test-org',
+    plan: 'free',
+  },
+  /**
+   * Organization with full details.
+   */
+  full: {
+    id: 'org_123',
+    name: 'test-org',
+    plan: 'enterprise',
+    created_at: '2024-01-01T00:00:00Z',
+    updated_at: '2024-01-02T00:00:00Z',
+  },
+} as const
+
+/**
+ * Common fixture data for repository responses.
+ */
+export const repositoryFixtures = {
+  /**
+   * Archived repository.
+   */
+  archived: {
+    id: 'repo_456',
+    name: 'old-repo',
+    archived: true,
+    default_branch: 'master', // inclusive-language: external-api -- GitHub repo.default_branch field; legacy archived repo fixture.
+  },
+  /**
+   * Basic repository with minimal data.
+   */
+  basic: {
+    id: 'repo_123',
+    name: 'test-repo',
+    archived: false,
+    default_branch: 'main',
+  },
+  /**
+   * Repository with full details.
+   */
+  full: {
+    id: 'repo_123',
+    name: 'test-repo',
+    archived: false,
+    default_branch: 'main',
+    homepage: 'https://example.com',
+    visibility: 'public',
+    created_at: '2024-01-01T00:00:00Z',
+    updated_at: '2024-01-02T00:00:00Z',
+  },
+} as const
+
+/**
+ * Common fixture data for scan responses.
+ */
+export const scanFixtures = {
+  /**
+   * Completed scan with no issues.
+   */
+  completed: {
+    id: 'scan_completed',
+    status: 'completed',
+    created_at: '2024-01-01T00:00:00Z',
+    completed_at: '2024-01-01T00:01:00Z',
+    issues_found: 0,
+  },
+  /**
+   * Failed scan.
+   */
+  failed: {
+    id: 'scan_failed',
+    status: 'failed',
+    created_at: '2024-01-01T00:00:00Z',
+    error: 'Scan timeout',
+  },
+  /**
+   * Pending scan.
+   */
+  pending: {
+    id: 'scan_pending',
+    status: 'pending',
+    created_at: '2024-01-01T00:00:00Z',
+  },
+  /**
+   * Completed scan with issues.
+   */
+  withIssues: {
+    id: 'scan_with_issues',
+    status: 'completed',
+    created_at: '2024-01-01T00:00:00Z',
+    completed_at: '2024-01-01T00:01:00Z',
+    issues_found: 3,
+  },
+} as const
+
+/**
+ * Common fixture data for package/artifact responses.
+ */
+export const packageFixtures = {
+  /**
+   * Package with malware alert.
+   */
+  malware: {
+    id: 'pkg_malware',
+    name: 'malware-package',
+    version: '3.0.0',
+    score: 0,
+    issues: ['malware'],
+  },
+  /**
+   * Safe package with high score.
+   */
+  safe: {
+    id: 'pkg_safe',
+    name: 'safe-package',
+    version: '1.0.0',
+    score: 95,
+  },
+  /**
+   * Package with vulnerabilities.
+   */
+  vulnerable: {
+    id: 'pkg_vuln',
+    name: 'vulnerable-package',
+    version: '2.0.0',
+    score: 45,
+    issues: ['vulnerability'],
+  },
+} as const
+
+/**
+ * Common fixture data for issue/alert responses.
+ */
+export const issueFixtures = {
+  /**
+   * License issue.
+   */
+  license: {
+    type: 'license',
+    severity: 'medium',
+    key: 'license-incompatible',
+    description: 'License incompatible with project',
+  },
+  /**
+   * Malware issue.
+   */
+  malware: {
+    type: 'malware',
+    severity: 'critical',
+    key: 'malware-detected',
+    description: 'Malicious code detected',
+  },
+  /**
+   * Vulnerability issue.
+   */
+  vulnerability: {
+    type: 'vulnerability',
+    severity: 'high',
+    key: 'CVE-2024-1234',
+    description: 'SQL Injection vulnerability',
+  },
+} as const
+
+/**
+ * All fixture categories in one object.
+ */
+export const fixtures = {
+  issues: issueFixtures,
+  organizations: organizationFixtures,
+  packages: packageFixtures,
+  repositories: repositoryFixtures,
+  scans: scanFixtures,
+} as const
+
+/**
+ * Create an error SDK response.
+ *
+ * @example
+ *   ;```ts
+ *   const response = mockErrorResponse('Not found', 404)
+ *   expect(response.success).toBe(false)
+ *   ```
+ *
+ * @template T - The data type (unused in error responses)
+ *
+ * @param error - The error message.
+ * @param status - HTTP status code (default: 500)
+ * @param cause - Optional error cause.
+ *
+ * @returns An error SDK result
+ */
+export function mockErrorResponse<T>(
+  error: string,
+  status = 500,
+  cause?: string | undefined,
+): SocketSdkGenericResult<T> {
+  return {
+    cause,
+    data: undefined,
+    error,
+    status,
+    success: false,
+  }
+}
+
+/**
+ * Create a mock SDK error with proper structure.
+ *
+ * @example
+ *   ;```ts
+ *   const mockMethod = vi
+ *     .fn()
+ *     .mockRejectedValue(
+ *       mockSdkError('NOT_FOUND', {
+ *         status: 404,
+ *         message: 'Repository not found',
+ *       }),
+ *     )
+ *   ```
+ *
+ * @param type - Error type ('NOT_FOUND', 'UNAUTHORIZED', etc.)
+ * @param options - Error options.
+ *
+ * @returns Error response matching SDK structure
+ */
+export function mockSdkError(
+  type: 'NOT_FOUND' | 'UNAUTHORIZED' | 'FORBIDDEN' | 'SERVER_ERROR' | 'TIMEOUT',
+  options: {
+    cause?: string | undefined
+    message?: string | undefined
+    status?: number | undefined
+  } = {},
+): Error & { status: number; cause?: string | undefined } {
+  const statusMap = {
+    FORBIDDEN: 403,
+    NOT_FOUND: 404,
+    SERVER_ERROR: 500,
+    TIMEOUT: 408,
+    UNAUTHORIZED: 401,
+  }
+
+  const messageMap = {
+    FORBIDDEN: 'Access forbidden',
+    NOT_FOUND: 'Resource not found',
+    SERVER_ERROR: 'Internal server error',
+    TIMEOUT: 'Request timeout',
+    UNAUTHORIZED: 'Unauthorized',
+  }
+
+  const status = options.status ?? statusMap[type]
+  const message = options.message ?? messageMap[type]
+
+  const error = new Error(message) as Error & {
+    status: number
+    cause?: string | undefined
+  }
+  error.status = status
+  if (options.cause) {
+    error.cause = options.cause
+  }
+
+  return error
+}
+
+/**
+ * Mock SDK method result with proper typing.
+ *
+ * @example
+ *   ;```ts
+ *   const mockGet = vi
+ *     .fn()
+ *     .mockResolvedValue(
+ *       mockSdkResult<'getRepo'>(true, { id: '123', name: 'repo' }),
+ *     )
+ *   ```
+ *
+ * @template T - The operation type.
+ *
+ * @param success - Whether the operation succeeded.
+ * @param data - Success data or error details.
+ *
+ * @returns Properly typed SDK result
+ */
+export function mockSdkResult<T extends SocketSdkOperations>(
+  success: true,
+  data: SocketSdkSuccessResult<T>['data'],
+  status?: number | undefined,
+): SocketSdkSuccessResult<T>
+
+export function mockSdkResult<T extends SocketSdkOperations>(
+  success: false,
+  error: string,
+  status?: number | undefined,
+  cause?: string | undefined,
+): SocketSdkErrorResult<T>
+
+// `success` is a load-bearing type discriminant: the two overloads above
+// narrow the return to the success or error result. An options object would
+// lose that discrimination.
+// oxlint-disable-next-line socket/no-boolean-trap-param -- type discriminant
+export function mockSdkResult<T extends SocketSdkOperations>(
+  success: boolean,
+  dataOrError: unknown,
+  status = success ? 200 : 500,
+  cause?: string | undefined,
+): SocketSdkResult<T> {
+  if (success) {
+    return {
+      cause: undefined,
+      data: dataOrError,
+      error: undefined,
+      status,
+      success: true,
+    } as SocketSdkSuccessResult<T>
+  }
+  return {
+    cause,
+    data: undefined,
+    error: dataOrError as string,
+    status,
+    success: false,
+  }
+}
+
+/**
+ * Create a successful SDK response.
+ *
+ * @example
+ *   ;```ts
+ *   const response = mockSuccessResponse({ id: '123', name: 'test' })
+ *   expect(response.success).toBe(true)
+ *   ```
+ *
+ * @template T - The data type.
+ *
+ * @param data - The response data.
+ * @param status - HTTP status code (default: 200)
+ *
+ * @returns A successful SDK result
+ */
+export function mockSuccessResponse<T>(
+  data: T,
+  status = 200,
+): SocketSdkGenericResult<T> {
+  return {
+    cause: undefined,
+    data,
+    error: undefined,
+    status,
+    success: true,
+  }
+}

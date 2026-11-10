@@ -1,0 +1,174 @@
+/**
+ * @file Configuration constants and enums for the Socket SDK. Provides default
+ *   values, HTTP agents, and public policy configurations for API
+ *   interactions.
+ */
+
+import { MapCtor } from '@socketsecurity/lib/primordials/map-set'
+
+import rootPkgJson from '../package.json' with { type: 'json' }
+import { buildSdkBaseUserAgent } from './user-agent.mts'
+
+import type { ALERT_ACTION, ALERT_TYPE } from './types/core.mts'
+
+import {
+  SOCKET_API_TOKENS_URL as LIB_SOCKET_API_TOKENS_URL,
+  SOCKET_CONTACT_URL as LIB_SOCKET_CONTACT_URL,
+  SOCKET_DASHBOARD_URL as LIB_SOCKET_DASHBOARD_URL,
+} from '@socketsecurity/lib/constants/socket'
+
+export const SOCKET_API_TOKENS_URL: string = LIB_SOCKET_API_TOKENS_URL
+export const SOCKET_CONTACT_URL: string = LIB_SOCKET_CONTACT_URL
+export const SOCKET_DASHBOARD_URL: string = LIB_SOCKET_DASHBOARD_URL
+
+export const DEFAULT_USER_AGENT = buildSdkBaseUserAgent(rootPkgJson)
+
+// Default timeout for HTTP requests (30 seconds)
+export const DEFAULT_HTTP_TIMEOUT = 30_000
+
+// Default number of retries for failed requests
+export const DEFAULT_RETRIES = 3
+
+// Default delay before first retry (milliseconds)
+export const DEFAULT_RETRY_DELAY = 1000
+
+// Default cache TTL (5 minutes)
+export const DEFAULT_CACHE_TTL = 5 * 60 * 1000
+
+// Maximum timeout for HTTP requests (5 minutes)
+export const MAX_HTTP_TIMEOUT = 5 * 60 * 1000
+
+// Minimum timeout for HTTP requests (5 seconds)
+export const MIN_HTTP_TIMEOUT = 5000
+
+// Maximum response body size (10MB)
+export const MAX_RESPONSE_SIZE = 10 * 1024 * 1024
+
+// Maximum wall-clock time to poll a cached scan endpoint that keeps
+// returning 202 Accepted before giving up (5 minutes).
+export const DEFAULT_POLL_TIMEOUT = 5 * 60 * 1000
+
+// Delay between polls of a cached scan endpoint that returned 202 (2 seconds).
+export const DEFAULT_POLL_INTERVAL = 2000
+
+// Public blob store URL for patch downloads
+export const SOCKET_PUBLIC_BLOB_STORE_URL = 'https://socketusercontent.com'
+
+// Retired compatibility value. Authentication rejects it.
+export const SOCKET_PUBLIC_API_TOKEN =
+  'sktsec_t_--RAN5U4ivauy4w37-6aoKyYPDt5ZbaT5JBVMqiwKo_api'
+
+// Max components to check via parallel firewall API before switching to batch.
+export const MAX_FIREWALL_COMPONENTS = 8
+
+// Public firewall API URL for per-package lookups (unauthenticated, fast).
+export const SOCKET_FIREWALL_API_URL = 'https://firewall-api.socket.dev/purl'
+
+// Public security policy.
+export const publicPolicy: Map<ALERT_TYPE, ALERT_ACTION> = new MapCtor([
+  // error (1):
+  ['malware', 'error'],
+  // warn (7):
+  ['criticalCVE', 'warn'],
+  ['didYouMean', 'warn'],
+  ['gitDependency', 'warn'],
+  ['httpDependency', 'warn'],
+  ['licenseSpdxDisj', 'warn'],
+  ['obfuscatedFile', 'warn'],
+  ['troll', 'warn'],
+  // monitor (7):
+  ['deprecated', 'monitor'],
+  ['mediumCVE', 'monitor'],
+  ['mildCVE', 'monitor'],
+  ['shrinkwrap', 'monitor'],
+  ['telemetry', 'monitor'],
+  ['unpopularPackage', 'monitor'],
+  ['unstableOwnership', 'monitor'],
+  // ignore (85):
+  ['ambiguousClassifier', 'ignore'],
+  ['badEncoding', 'ignore'],
+  ['badSemver', 'ignore'],
+  ['badSemverDependency', 'ignore'],
+  ['bidi', 'ignore'],
+  ['binScriptConfusion', 'ignore'],
+  ['chromeContentScript', 'ignore'],
+  ['chromeHostPermission', 'ignore'],
+  ['chromePermission', 'ignore'],
+  ['chromeWildcardHostPermission', 'ignore'],
+  ['chronoAnomaly', 'ignore'],
+  ['compromisedSSHKey', 'ignore'],
+  ['copyleftLicense', 'ignore'],
+  ['cve', 'ignore'],
+  ['debugAccess', 'ignore'],
+  ['deprecatedLicense', 'ignore'],
+  ['deprecatedException', 'ignore'],
+  ['dynamicRequire', 'ignore'],
+  ['emptyPackage', 'ignore'],
+  ['envVars', 'ignore'],
+  ['explicitlyUnlicensedItem', 'ignore'],
+  ['extraneousDependency', 'ignore'],
+  ['fileDependency', 'ignore'],
+  ['filesystemAccess', 'ignore'],
+  ['floatingDependency', 'ignore'],
+  ['gitHubDependency', 'ignore'],
+  ['gptAnomaly', 'ignore'],
+  ['gptDidYouMean', 'ignore'],
+  ['gptMalware', 'ignore'],
+  ['gptSecurity', 'ignore'],
+  ['hasNativeCode', 'ignore'],
+  ['highEntropyStrings', 'ignore'],
+  ['homoglyphs', 'ignore'],
+  ['installScripts', 'ignore'],
+  ['invalidPackageJSON', 'ignore'],
+  ['invisibleChars', 'ignore'],
+  ['licenseChange', 'ignore'],
+  ['licenseException', 'ignore'],
+  ['longStrings', 'ignore'],
+  ['majorRefactor', 'ignore'],
+  ['manifestConfusion', 'ignore'],
+  ['minifiedFile', 'ignore'],
+  ['miscLicenseIssues', 'ignore'],
+  ['missingAuthor', 'ignore'],
+  ['missingDependency', 'ignore'],
+  ['missingLicense', 'ignore'],
+  ['missingTarball', 'ignore'],
+  ['mixedLicense', 'ignore'],
+  ['modifiedException', 'ignore'],
+  ['modifiedLicense', 'ignore'],
+  ['networkAccess', 'ignore'],
+  ['newAuthor', 'ignore'],
+  ['noAuthorData', 'ignore'],
+  ['noBugTracker', 'ignore'],
+  ['noLicenseFound', 'ignore'],
+  ['noREADME', 'ignore'],
+  ['noRepository', 'ignore'],
+  ['noTests', 'ignore'],
+  ['noV1', 'ignore'],
+  ['noWebsite', 'ignore'],
+  ['nonOSILicense', 'ignore'],
+  ['nonSPDXLicense', 'ignore'],
+  ['nonpermissiveLicense', 'ignore'],
+  ['notice', 'ignore'],
+  ['obfuscatedRequire', 'ignore'],
+  ['peerDependency', 'ignore'],
+  ['potentialVulnerability', 'ignore'],
+  ['semverAnomaly', 'ignore'],
+  ['shellAccess', 'ignore'],
+  ['shellScriptOverride', 'ignore'],
+  ['socketUpgradeAvailable', 'ignore'],
+  ['suspiciousStarActivity', 'ignore'],
+  ['suspiciousString', 'ignore'],
+  ['trivialPackage', 'ignore'],
+  ['typeModuleCompatibility', 'ignore'],
+  ['uncaughtOptionalDependency', 'ignore'],
+  ['unclearLicense', 'ignore'],
+  ['unidentifiedLicense', 'ignore'],
+  ['unmaintained', 'ignore'],
+  ['unpublished', 'ignore'],
+  ['unresolvedRequire', 'ignore'],
+  ['unsafeCopyright', 'ignore'],
+  ['unusedDependency', 'ignore'],
+  ['urlStrings', 'ignore'],
+  ['usesEval', 'ignore'],
+  ['zeroWidth', 'ignore'],
+])

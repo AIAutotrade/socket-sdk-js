@@ -1,29 +1,33 @@
 # @socketsecurity/sdk
 
-[![Socket Badge](https://socket.dev/api/badge/npm/package/@socketsecurity/sdk)](https://socket.dev/npm/package/@socketsecurity/sdk)
-[![CI](https://github.com/SocketDev/socket-sdk-js/actions/workflows/ci.yml/badge.svg)](https://github.com/SocketDev/socket-sdk-js/actions/workflows/ci.yml)
-![Coverage](https://img.shields.io/badge/coverage-80%25-brightgreen)
+<a href="https://socket.dev/npm/package/@socketsecurity/sdk"><img src="https://badge.socket.dev/npm/package/@socketsecurity/sdk" alt="Socket Badge" height="20"></a>
+<picture><img src="https://raw.githubusercontent.com/SocketDev/socket-sdk-js/HEAD/assets/repo/coverage.svg?v=fce8b9cdc6e7" height="20" alt="Coverage" /></picture>
 
 [![Follow @SocketSecurity](https://img.shields.io/twitter/follow/SocketSecurity?style=social)](https://twitter.com/SocketSecurity)
 [![Follow @socket.dev on Bluesky](https://img.shields.io/badge/Follow-@socket.dev-1DA1F2?style=social&logo=bluesky)](https://bsky.app/profile/socket.dev)
 
-JavaScript SDK for [Socket.dev](https://socket.dev/) API.
+JavaScript SDK for the [Socket.dev](https://socket.dev/) API - package scoring, quota management, batch lookups, dependency analysis.
+
+`@socketsecurity/sdk` is the canonical JavaScript/TypeScript client for the Socket.dev API. It exists so any Node app - your build pipeline, your registry tooling, your custom security gate - can call Socket's package-scoring and analysis endpoints without hand-rolling auth, retries, and response shapes. The SDK is consumed by Socket's own CLI, MCP server, and third-party integrations.
 
 ## Install
 
-```bash
+```sh
 pnpm add @socketsecurity/sdk
 ```
 
 ## Usage
 
+<details>
+<summary><b>Quickstart</b>: construct <code>SocketSdk</code> with <code>retries</code>, <code>retryDelay</code> and <code>timeout</code>, then call <code>getQuota</code>, <code>getScoreByNpmPackage</code>, and <code>batchPackageFetch</code></summary>
+
 ```typescript
 import { SocketSdk } from '@socketsecurity/sdk'
 
 const client = new SocketSdk('your-api-key', {
-  retries: 3,        // Retry failed requests up to 3 times
-  retryDelay: 1000,  // Start with 1s delay, exponential backoff
-  timeout: 30000,    // 30 second timeout
+  retries: 3, // Retry failed requests up to 3 times
+  retryDelay: 1000, // Start with 1s delay, exponential backoff
+  timeout: 30000, // 30 second timeout
 })
 
 // Check your quota
@@ -35,38 +39,51 @@ if (quota.success) {
 // Analyze a package
 const result = await client.getScoreByNpmPackage('express', '4.18.0')
 if (result.success) {
-  console.log(`Security Score: ${result.data.score}/100`)
+  console.log(`Dependency Score: ${result.data.depscore}`)
 }
 
 // Batch analyze multiple packages
 const batchResult = await client.batchPackageFetch({
   components: [
     { purl: 'pkg:npm/express@4.18.0' },
-    { purl: 'pkg:npm/react@18.0.0' }
-  ]
+    { purl: 'pkg:npm/react@18.0.0' },
+  ],
 })
 ```
 
-## Documentation
+</details>
 
-| Guide | Description |
-|-------|-------------|
-| **[Getting Started](./docs/getting-started.md)** | Quick start for contributors (5 min setup) |
-| **[API Reference](./docs/api-reference.md)** | Complete API method documentation |
-| **[Usage Examples](./docs/usage-examples.md)** | Real-world patterns and code samples |
-| **[Quota Management](./docs/quota-management.md)** | Cost tiers (0/10/100) and utilities |
-| **[Testing Guide](./docs/dev/testing.md)** | Test helpers, fixtures, and patterns |
-| **[Method Reference](./docs/when-to-use-what.md)** | Quick method selection guide |
+## Development
 
-## Examples
+<details>
+<summary>Contributor commands</summary>
 
-See **[usage-examples.md](./docs/usage-examples.md)** for complete examples including:
-- Package security analysis
-- Batch operations
-- Full scans with SBOM
-- Policy management
-- Quota planning
+```sh
+pnpm install
+pnpm run build
+pnpm test
+pnpm run check
+```
+
+### Documentation
+
+| Guide                                              | Description                                        |
+| -------------------------------------------------- | -------------------------------------------------- |
+| **[API Reference](./docs/api.md)**                 | Class methods, exported helpers, and types         |
+| **[SDK Concepts](./docs/concepts.md)**             | Results, pagination, uploads, and runtime behavior |
+| **[Quota Management](./docs/quota-management.md)** | Metadata-backed costs and quota helpers            |
+| **[Unsupported endpoints](./docs/unsupported.md)** | Endpoints the SDK does not wrap                    |
+
+</details>
 
 ## License
 
 MIT
+
+<div align="center">
+  <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/SocketDev/socket-sdk-js/HEAD/assets/fleet/socket-combomark-dark.svg">
+      <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/SocketDev/socket-sdk-js/HEAD/assets/fleet/socket-combomark-light.svg">
+      <img width="320" height="91" alt="Socket" src="https://raw.githubusercontent.com/SocketDev/socket-sdk-js/HEAD/assets/fleet/socket-combomark-light.svg">
+  </picture>
+</div>

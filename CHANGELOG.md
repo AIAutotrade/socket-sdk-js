@@ -4,6 +4,288 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [4.2.0](https://github.com/SocketDev/socket-sdk-js/releases/tag/v4.2.0) - 2026-10-08
+
+### Fixed
+
+- **`build`** — align SDK bundle tooling
+- **`purl`** — route batch requests through purl api
+
+### Internal
+
+- **`deps`** — repair SDK workspace catalog
+- **`fleet`** — point run-main imports at process/main/run
+- **`bootstrap`** — point preinstall at current fleet payload
+
+## [4.1.5](https://github.com/SocketDev/socket-sdk-js/releases/tag/v4.1.5) - 2026-09-22
+
+### Added
+
+- **`api`** — add v1 clients and synchronize api contracts
+- add 10 missing patch SDK methods
+
+### Fixed
+
+- **`openapi`** — sync v0 and v1 contracts
+- **`openapi`** — sync v0 and v1 contracts
+- **`paths`** — contain patch regeneration inputs
+- **`tooling`** — normalize helper options and api references
+- **`build`** — align cached artifacts and bundled comments
+- **`tooling`** — keep published hydration reproducible
+- **`tooling`** — remove the standing pluginutils soak exception
+- **`tooling`** — resolve package managers from the fleet registry
+- **`tooling`** — make sdk entrypoints safe to inspect
+- **`sdk`** — return prototype-free artifact records
+- **`tooling`** — exclude generated api declarations from formatting
+- **`tooling`** — reconcile installed fleet runtime contracts
+- match Socket coverage badge styling
+- **`codegen`** — preserve strict type keys and validate formatted output
+- **`test`** — preserve timeout options and type fuzz headers
+- **`scripts`** — repoint the last five is-main-module imports
+- **`scripts`** — repoint is-main-module and trim two header essays
+- **`scripts`** — repoint is-main-module after the fleet \_shared split
+- **`fuzz`** — match .mts targets and stay quiet on an empty run
+- **`scripts`** — repoint trust at registry-infra after the rename
+- **`scripts`** — build the loader short-circuit url with pathToFileURL
+- **`sdk`** — insert the error body verbatim and drop the deprecated marker
+- **`scripts`** — insert the rebuilt export verbatim in strict-types codegen
+
+### Internal
+
+- **`ci`** — align sdk release configuration with fleet checks
+- **`deps`** — reconcile hydrated workspace lockfile
+- **`deps`** — register char comparison lint rule
+- **`ci`** — align SDK validation contracts
+- **`ci`** — use current openapi verification tests
+- **`ci`** — support repository script results
+- **`ci`** — use the scoped app token for openapi pull requests
+- **`ci`** — base generated openapi changes on the current commit
+- **`ci`** — hydrate openapi worktree patches before installation
+- **`ci`** — restore polka url parser compatibility
+- **`ci`** — install hook dependencies in the openapi worktree
+- **`ci`** — bootstrap the exact workflow commit without checkout action
+- **`check`** — remove obsolete changed-test mapper
+- **`check`** — normalize file paths and remove unused command helpers
+- **`ci`** — import entrypoint helper from the pinned fleet pack
+- **`ci`** — repair build parsing and test runner compatibility
+- **`deps`** — drop the orphaned pnpm 11.9.0 package-manager pin
+- **`deps`** — align the pnpm devEngines pin with engines
+- **`lint`** — satisfy the socket rules the refreshed payload added
+- **`deps`** — _update @socketsecurity/lib to 7.0.1_
+- **`deps`** — add missing yaml catalog entry and reconcile lockfile
+
+## [4.1.4](https://github.com/SocketDev/socket-sdk-js/releases/tag/v4.1.4) - 2026-08-05
+
+### Fixed
+
+- **`upload`** — vendor form-data so bundlers can ship it (#681)
+- **`catalog`** — sync the sdk -stable alias to its base version
+- **`catalog`** — sync the sdk -stable alias to the held base version
+- **`soak`** — drop the unpublishable bare stuie exclude
+
+### Internal
+
+- **`fleet`** — resync -stable aliases, drop scripts with missing targets
+
+## [4.1.3](https://github.com/SocketDev/socket-sdk-js/releases/tag/v4.1.3) - 2026-07-30
+
+### Added
+
+- **`http`** — drain a streamed error body under the response size cap
+- **`ndjson`** — add one incremental line splitter for NDJSON reads
+
+### Fixed
+
+- **`types`** — ship self-contained multipart declarations
+- **`exports`** — declare the form-data chunk graph-only and revive the llms script
+- **`sdk`** — drop the agent option the transport cannot forward
+- **`sdk`** — stream scan and patch reads instead of buffering the whole body
+- **`test`** — move the isolated-vitest cache out of node\_modules
+- **`build`** — bundle form-data as a lazily required chunk
+- **`deps`** — keep the nock pin on the released 14.x line
+
+### Internal
+
+- **`deps`** — absorb the fleet catalog heal (sdk 4.1.2)
+
+## [4.1.2](https://github.com/SocketDev/socket-sdk-js/releases/tag/v4.1.2) - 2026-07-27
+
+### Fixed
+
+- **`test`** — normalize nock request-header capture across nock majors
+- **`test`** — accept nock 14 legacy request headers in the content-type capture
+- **`fuzz`** — sweep orphaned vitiate shm segments before the run
+
+### Internal
+
+- **`deps`** — bump the @socketsecurity/lib catalog pin to 6.3.0
+
+## [4.1.1](https://github.com/SocketDev/socket-sdk-js/releases/tag/v4.1.1) - 2026-07-26
+
+### Fixed
+
+- preserve fields the public batch consumer needs through the policy reshape (#670)
+
+## [4.1.0](https://github.com/SocketDev/socket-sdk-js/releases/tag/v4.1.0) - 2026-07-25
+
+### Added
+
+- add browser/MV3 build (dist/index.browser.js) (#666)
+- enrich default user agent with Node.js version and OS info (#665)
+- add missing Socket API endpoints for SDK parity
+
+### Fixed
+
+- **`types`** — type listOrganizations result as a keyed map, not an array (#667)
+
+### Internal
+
+- **`fleet`** — disable typescript/no-unnecessary-type-assertion (#663)
+
+## [4.0.4](https://github.com/SocketDev/socket-sdk-js/releases/tag/v4.0.4) - 2026-07-24
+
+### Fixed
+
+- **`install`** — the published manifest no longer declares a `preinstall` script pointing at a file the tarball does not ship; 4.0.3 installs failed when lifecycle scripts were enabled
+
+## [4.0.3](https://github.com/SocketDev/socket-sdk-js/releases/tag/v4.0.3) - 2026-07-24
+
+### Internal
+
+- **`deps`** — update vendored `@socketsecurity/lib` to 6.2.3: engine-gate collapse and lazy-required purl specs trim the published bundle
+- **`deps`** — update vendored `@socketregistry/packageurl-js` to 1.4.7
+
+## [4.0.2](https://github.com/SocketDev/socket-sdk-js/releases/tag/v4.0.2) - 2026-07-24
+
+### Added
+
+- `getDiffScanById()` accepts an options object (`cached`, `omit_license_details`, `omit_unchanged`); `getFullScan()` accepts an options object (`cached`, `include_scores`, `include_license_details`).
+- `pollIntervalMs` client option sets the wait between polls while a cached scan is still computing (default 2 seconds).
+
+### Changed
+
+- **`batch`** — default batchPackageStream chunkSize to the API's 1024 max
+- **`upload`** — lazy form-data — importing the SDK no longer binds node:http
+- `getFullScan()` and `getDiffScanById()` now read cached scan results by default and poll automatically while a result is still computing, so callers get the finished scan without handling intermediate responses. Pass `{ cached: false }` to recompute on demand.
+
+### Fixed
+
+- **`install`** — use the canonical foundation bootstrap; segregate the firewall bootstrap entry
+- resolve quality scan issues
+- **`codegen`** — converge the openapi sync pipeline
+
+### Internal
+
+- **`deps`** — import from @socketsecurity/lib errors/* leaves, not the dropped bare subpath
+
+## [4.0.1](https://github.com/SocketDev/socket-sdk-js/releases/tag/v4.0.1) - 2026-04-14
+
+### Fixed
+
+- Strip `Authorization` header (case-insensitive) from public firewall API endpoint requests
+
+### Changed — build
+
+- Bundle `@socketsecurity/lib` and `form-data` into dist output, making the SDK a zero-runtime-dependency package
+- Stub heavy `@socketsecurity/lib` internals (npm-pack.js 2.5MB, pico-pack.js 260KB) and replace `mime-db` (212KB) with a minimal 3-entry lookup
+- dist/index.js: 3,897KB → 712KB (82% reduction)
+
+## [4.0.0](https://github.com/SocketDev/socket-sdk-js/releases/tag/v4.0.0) - 2026-04-06
+
+### Changed
+
+- Migrated HTTP internals to `@socketsecurity/lib/http-request` (`httpRequest`), reducing code duplication and consolidating response handling
+- Retry logic improved: all 4xx client errors now bail immediately (previously only 401/403)
+- New audit log action types: `CreateFirewallCustomRegistry`, `CreateFirewallDeploymentConfig`, `DeleteFirewallCustomRegistry`, `DeleteFirewallDeploymentConfig`, `UpdateFirewallCustomRegistry`, `UpdateFirewallDeploymentConfig`
+
+### Breaking Changes
+
+- **HTTP client refactored**: All HTTP methods (`createGetRequest`, `createDeleteRequest`, `createRequestWithJson`, `createUploadRequest`) now return `HttpResponse` from `@socketsecurity/lib/http-request` instead of Node.js `IncomingMessage`
+- **`ResponseError.response`**: Changed from `IncomingMessage` to `HttpResponse` — access status via `.status`/`.statusText` instead of `.statusCode`/`.statusMessage`
+- **Unified HTTP transport**: File uploads now use `httpRequest()` from `@socketsecurity/lib` — eliminated the dual `node:http`/`node:https` + `getResponse()` stack
+- **Trimmed public API surface**: Removed internal helpers from the main entry point:
+  - HTTP functions: `createDeleteRequest`, `createGetRequest`, `createRequestWithJson`, `getErrorResponseBody`, `getResponseJson`, `isResponseOk`, `reshapeArtifactForPublicPolicy`
+  - File upload functions: `createRequestBodyForFilepaths`, `createRequestBodyForJson`, `createUploadRequest`
+  - Utilities: `calculateWordSetSimilarity`, `filterRedundantCause`, `normalizeBaseUrl`, `promiseWithResolvers`, `queryToSearchParams`, `resolveAbsPaths`, `resolveBasePath`, `shouldOmitReason`
+  - Constants: `DEFAULT_USER_AGENT`, `httpAgentNames`, `publicPolicy`
+- **Removed exports**: `getHttpModule` and `getResponse` are fully removed (not just from index)
+- **Removed `PromiseQueue`**: The `PromiseQueue` class has been removed entirely
+- **Removed `getSupportedScanFiles()`**: Deprecated since 2023-01-15 — use `getSupportedFiles()` instead
+- **Removed `http2-wrapper` type dependency**: `Agent` type now uses `ClientHttp2Session` from native `node:http2`
+
+## [3.5.0](https://github.com/SocketDev/socket-sdk-js/releases/tag/v3.5.0) - 2026-04-03
+
+### Added
+
+- **checkMalware**: New API method for normalized malware detection across public and org tokens
+  - Public tokens use the firewall API with client-side `publicPolicy` filtering
+  - Org tokens use the batch PURL API with full server-assigned org policy
+  - Both paths return the same normalized `MalwareCheckResult` shape
+- New exported types: `MalwareCheckAlert`, `MalwareCheckPackage`, `MalwareCheckResult`, `MalwareCheckScore`
+- New audit log action types: `CreateTicket`, `DisconnectJiraIntegration`, `JiraIntegrationConnected`
+- New `alert-resolution` permission scope (list, create, read, delete)
+- New `workspace` parameter for `createOrgFullScan` package entries
+- New `SocketSBOMScore` schema for supply chain risk score breakdowns with formulas and components
+- New `skillPreExecution` alert type and policy action
+- Full scan `include_scores` and `include_scores_details` query parameters with `scores` ndjson event
+- Batch PURL `timeoutSec` parameter for scan result timeout control
+
+## [3.4.1](https://github.com/SocketDev/socket-sdk-js/releases/tag/v3.4.1) - 2026-03-12
+
+### Changed
+
+- Synced OpenAPI type definitions with latest API specification
+  - Improved documentation for Org Triage API query parameters and request fields
+- Updated `@socketsecurity/lib` to v5.8.1
+
+## [3.4.0](https://github.com/SocketDev/socket-sdk-js/releases/tag/v3.4.0) - 2026-03-11
+
+### Added
+
+- **listRepositories**: New `workspace` query parameter to filter repositories by workspace (when provided, only repos in that workspace are returned)
+- New audit log action types for OAuth refresh tokens and repository access rules:
+  - `CreateOauthRefreshToken` - Track OAuth refresh token creation
+  - `RotateOauthRefreshToken` - Track OAuth refresh token rotation
+  - `CreateRepoAccessRule` - Track repository access rule creation
+  - `UpdateRepoAccessRule` - Track repository access rule updates
+  - `DeleteRepoAccessRule` - Track repository access rule deletion
+
+### Changed
+
+- Synced OpenAPI type definitions with latest API specification
+
+## [3.3.1](https://github.com/SocketDev/socket-sdk-js/releases/tag/v3.3.1) - 2026-03-03
+
+### Added
+
+- New API endpoints from OpenAPI sync: CSV/PDF export for full scans, delete triage alerts, new alert types
+
+### Changed
+
+- **createRepository**: Now requires `repoSlug` as second parameter with typed options including `workspace`, `visibility`, `homepage`, `archived`, `default_branch`, and `description`
+
+## [3.3.0](https://github.com/SocketDev/socket-sdk-js/releases/tag/v3.3.0) - 2026-01-25
+
+### Added
+
+- New SDK convenience methods for OpenAPI v3.3.0 endpoints:
+  - `batchOrgPackageFetch(orgSlug, components, options)` - Organization-scoped PURL batch lookup with security policy label support
+  - `exportOpenVEX(orgSlug, id, options)` - Export vulnerability exploitability data as OpenVEX v0.2.0 documents (includes patch data and reachability analysis)
+  - `getOrgAlertFullScans(orgSlug, options)` - List full scans associated with specific alerts
+  - `rescanFullScan(orgSlug, fullScanId, options)` - Rescan existing full scans with shallow (policy reapplication) or deep (dependency resolution rerun) modes
+- Repository endpoints now support optional `workspace` parameter for workspace-scoped operations:
+  - `createRepository(orgSlug, params, { workspace })`
+  - `deleteRepository(orgSlug, repoSlug, { workspace })`
+  - `getRepository(orgSlug, repoSlug, { workspace })`
+  - `updateRepository(orgSlug, repoSlug, params, { workspace })`
+
+### Changed
+
+- Updated `@socketsecurity/lib` to v5.5.3
+- TypeScript: Auto-generated strict types from OpenAPI schema for improved type safety
+- TypeScript: All optional properties now explicitly include `| undefined` for better null checking
+- Synced OpenAPI type definitions with latest API specification
+
 ## [3.2.0](https://github.com/SocketDev/socket-sdk-js/releases/tag/v3.2.0) - 2025-12-08
 
 ### Added
@@ -32,13 +314,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [3.1.3](https://github.com/SocketDev/socket-sdk-js/releases/tag/v3.1.3) - 2025-11-04
 
-### Fixed
-
-- Updated OpenAPI type generation script to automatically preserve SDK v3 method name aliases during automated syncs
-
 ### Changed
 
 - Updated `@socketsecurity/lib` to v3.2.4
+
+### Fixed
+
+- Updated OpenAPI type generation script to automatically preserve SDK v3 method name aliases during automated syncs
 
 ## [3.1.2](https://github.com/SocketDev/socket-sdk-js/releases/tag/v3.1.2) - 2025-11-02
 
@@ -67,14 +349,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - Bundle dependencies validation to prevent `link:` dependencies in production
 
-### Fixed
-
-- Build process now correctly bundles `@socketsecurity/lib` instead of marking it as external
-
 ### Changed
 
 - Updated `@socketsecurity/lib` to v3.1.3
 - Updated `@socketregistry/packageurl-js` to v1.3.5
+
+### Fixed
+
+- Build process now correctly bundles `@socketsecurity/lib` instead of marking it as external
 
 ## [3.0.30](https://github.com/SocketDev/socket-sdk-js/releases/tag/v3.0.30) - 2025-11-01
 
@@ -83,14 +365,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Validation guard against `link:` dependencies in package.json
 - Pre-commit and pre-push hooks for development workflow
 
-### Fixed
-
-- Build output now uses relative paths instead of absolute paths for better portability
-
 ### Changed
 
 - Updated `@socketsecurity/lib` to v3.0.6
 - Updated `@socketregistry/packageurl-js` to v1.3.3
+
+### Fixed
+
+- Build output now uses relative paths instead of absolute paths for better portability
 
 ## [3.0.29](https://github.com/SocketDev/socket-sdk-js/releases/tag/v3.0.29) - 2025-11-01
 
@@ -237,13 +519,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [3.0.6](https://github.com/SocketDev/socket-sdk-js/releases/tag/v3.0.6) - 2025-10-24
 
-### Fixed
-
-- Externalized `@socketsecurity/lib` dependency to prevent dynamic require errors in bundled applications
-
 ### Changed
 
 - Updated `@socketsecurity/lib` to v1.3.3
+
+### Fixed
+
+- Externalized `@socketsecurity/lib` dependency to prevent dynamic require errors in bundled applications
 
 ## [3.0.5](https://github.com/SocketDev/socket-sdk-js/releases/tag/v3.0.5) - 2025-10-24
 
@@ -277,11 +559,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [3.0.0](https://github.com/SocketDev/socket-sdk-js/releases/tag/v3.0.0) - 2025-10-23
 
-### ⚠️ BREAKING CHANGES
-
-#### Removed Deprecated Methods
+### Removed Deprecated Methods
 
 The following methods mapped to deprecated `/report/*` backend endpoints and have been removed:
+
+### Added
+
+- **File Validation Callback:** New `onFileValidation` option in `SocketSdkOptions` allows customizing error handling when unreadable files are detected. File-upload methods (`uploadManifestFiles()`, `createFullScan()`, `createDependenciesSnapshot()`) now automatically validate file readability, preventing ENOENT errors from Yarn Berry PnP virtual filesystems and pnpm symlink issues.
+
+### Changed
+
+- File-upload methods automatically skip unreadable files with warnings instead of failing
+
+### ⚠️ BREAKING CHANGES
 
 - **`createScan()`** - Use `createFullScan()` instead
 - **`deleteScan()`** - Use `deleteFullScan()` instead
@@ -291,6 +581,7 @@ The following methods mapped to deprecated `/report/*` backend endpoints and hav
 #### Method Renames (Following REST Conventions)
 
 **Full Scans (Modern API):**
+
 - `getOrgFullScanList()` → `listFullScans()` with `ListFullScansOptions`
 - `createOrgFullScan()` → `createFullScan()` with `CreateFullScanOptions`
 - `getOrgFullScanBuffered()` → `getFullScan()`
@@ -299,9 +590,11 @@ The following methods mapped to deprecated `/report/*` backend endpoints and hav
 - `getOrgFullScanMetadata()` → `getFullScanMetadata()`
 
 **Organizations:**
+
 - `getOrganizations()` → `listOrganizations()`
 
 **Repositories:**
+
 - `getOrgRepoList()` → `listRepositories()` with `ListRepositoriesOptions`
 - `getOrgRepo()` → `getRepository()`
 - `createOrgRepo()` → `createRepository()`
@@ -312,35 +605,29 @@ The following methods mapped to deprecated `/report/*` backend endpoints and hav
 
 Strict types now mark guaranteed API fields as required instead of optional, improving IntelliSense autocomplete.
 
-### Added
-
-- **File Validation Callback:** New `onFileValidation` option in `SocketSdkOptions` allows customizing error handling when unreadable files are detected. File-upload methods (`uploadManifestFiles()`, `createFullScan()`, `createDependenciesSnapshot()`) now automatically validate file readability, preventing ENOENT errors from Yarn Berry PnP virtual filesystems and pnpm symlink issues.
-
-### Changed
-
-- File-upload methods automatically skip unreadable files with warnings instead of failing
-
-See [docs/migration-v3.md](./docs/migration-v3.md) and [docs/when-to-use-what.md](./docs/when-to-use-what.md) for migration guidance.
-
 ## [2.0.7](https://github.com/SocketDev/socket-sdk-js/releases/tag/v2.0.7) - 2025-10-22
 
 ### Changed
+
 - Sync with openapi definition
 
 ## [2.0.6](https://github.com/SocketDev/socket-sdk-js/releases/tag/v2.0.6) - 2025-10-22
 
 ### Fixed
+
 - TypeScript lint compliance for array type syntax in `SocketSdkArrayElement` type helper
 
 ## [2.0.5](https://github.com/SocketDev/socket-sdk-js/releases/tag/v2.0.5) - 2025-10-22
 
 ### Added
+
 - `SocketSdkData<T>` type helper for extracting data from SDK operation results
 - `SocketSdkArrayElement<T, K>` type helper for extracting array element types from SDK operations
 
 ## [2.0.4](https://github.com/SocketDev/socket-sdk-js/releases/tag/v2.0.4) - 2025-10-22
 
 ### Added
+
 - Support for `Retry-After` header in rate limit responses (HTTP 429)
   - Automatically respects server-specified retry delays
   - Parses both delay-seconds (numeric) and HTTP-date formats
@@ -349,16 +636,19 @@ See [docs/migration-v3.md](./docs/migration-v3.md) and [docs/when-to-use-what.md
 ## [2.0.3](https://github.com/SocketDev/socket-sdk-js/releases/tag/v2.0.3) - 2025-10-22
 
 ### Fixed
+
 - Improved TypeScript module resolution with explicit type exports instead of wildcard re-exports
 
 ## [2.0.2](https://github.com/SocketDev/socket-sdk-js/releases/tag/v2.0.2) - 2025-10-22
 
 ### Fixed
+
 - Ensured expected dist/ files are produced and refined package.json exports
 
 ## [2.0.1](https://github.com/SocketDev/socket-sdk-js/releases/tag/v2.0.1) - 2025-10-21
 
 ### Changed
+
 - Use `@socketsecurity/lib` under the hood
 - Synced OpenAPI type definitions with latest API specification
   - Added documentation for `scan_type` query parameter on manifest upload endpoint (used for categorizing multiple SBOM heads per repository branch)
@@ -366,7 +656,22 @@ See [docs/migration-v3.md](./docs/migration-v3.md) and [docs/when-to-use-what.md
 
 ## [2.0.0](https://github.com/SocketDev/socket-sdk-js/releases/tag/v2.0.0) - 2025-10-10
 
+To migrate from v1.x to v2.0:
+
+1. Ensure your project supports ESM modules (Node.js 14+ with `"type": "module"` or `.mjs` extensions)
+2. Update imports from CommonJS `require()` to ESM `import` statements:
+
+   ```javascript
+   // Before (v1.x)
+   const { SocketSdk } = require('@socketsecurity/sdk')
+   // After (v2.0)
+   import { SocketSdk } from '@socketsecurity/sdk'
+   ```
+
+3. If your project still requires CommonJS, consider staying on v1.x or using a transpiler
+
 ### Changed
+
 - **BREAKING**: Migrated to ESM-only module format
   - Package is now ESM-only (`"type": "module"` in package.json)
   - All output files use `.mjs` extension for JavaScript
@@ -377,43 +682,35 @@ See [docs/migration-v3.md](./docs/migration-v3.md) and [docs/when-to-use-what.md
 - Improved code splitting for better tree-shaking with ESM
 
 ### Removed
+
 - **BREAKING**: Removed CommonJS support and exports
 - Removed CommonJS-specific build configurations
-
-### Migration Guide
-To migrate from v1.x to v2.0:
-1. Ensure your project supports ESM modules (Node.js 14+ with `"type": "module"` or `.mjs` extensions)
-2. Update imports from CommonJS `require()` to ESM `import` statements:
-   ```javascript
-   // Before (v1.x)
-   const { SocketSdk } = require('@socketsecurity/sdk');
-
-   // After (v2.0)
-   import { SocketSdk } from '@socketsecurity/sdk';
-   ```
-3. If your project still requires CommonJS, consider staying on v1.x or using a transpiler
 
 ## [1.11.2](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.11.2) - 2025-10-07
 
 ### Fixed
+
 - Fixed typos in requirements.json
 - Updated @socketsecurity/registry to fix bugs related to inlined runtime-dependent expressions
 
 ## [1.11.1](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.11.1) - 2025-10-06
 
 ### Added
+
 - Performance optimizations with memoization for `normalizeBaseUrl` and quota utility functions
 - Performance tracking to HTTP client functions
 - Comprehensive error handling tests for SDK methods across organization, scanning, and batch APIs
 - Reusable assertion helpers for SDK tests
 
 ### Changed
+
 - Improved test coverage and reliability with additional test cases
 - Streamlined documentation (README, TESTING.md, QUOTA.md, EXAMPLES.md) for better clarity and discoverability
 
 ## [1.11.0](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.11.0) - 2025-10-04
 
 ### Added
+
 - Optional TTL caching for API responses with configurable cache duration
 - New `cache` option (default: false) to enable response caching
 - New `cacheTtl` option (default: 5 minutes) to customize cache duration
@@ -421,16 +718,19 @@ To migrate from v1.x to v2.0:
 ## [1.10.1](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.10.1) - 2025-10-04
 
 ### Added
+
 - Automatic retry with exponential backoff to all HTTP API calls for improved reliability on transient failures
 
 ## [1.10.0](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.10.0) - 2025-10-04
 
 ### Added
+
 - Added `PromiseQueue` utility for controlled concurrency in async operations
 - HTTP retry logic with exponential backoff for improved reliability on transient failures
 - Added option type interfaces: `CreateDependenciesSnapshotOptions`, `CreateOrgFullScanOptions`, `CreateScanFromFilepathsOptions`, `StreamOrgFullScanOptions`, `UploadManifestFilesOptions`
 
 ### Changed
+
 - **BREAKING**: Refactored SDK methods to use options objects instead of positional parameters for better API clarity:
   - `createDependenciesSnapshot(filepaths, options)` - replaced `repo` and `branch` positional parameters with options object
   - `createOrgFullScan(orgSlug, filepaths, options)` - replaced positional parameters with options object
@@ -443,6 +743,7 @@ To migrate from v1.x to v2.0:
 - Updated `@socketsecurity/registry` dependency to 1.4.0
 
 ### Fixed
+
 - Fixed import assertion syntax for JSON imports to use standard import syntax
 - Fixed HTTP retry test mocks to correctly match PUT method requests
 - Fixed critical issues in type handling and URL search parameter conversions
@@ -450,22 +751,26 @@ To migrate from v1.x to v2.0:
 ## [1.9.2](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.9.2) - 2025-10-04
 
 ### Changed
+
 - Improved TypeScript type definitions - All optional properties now include explicit `| undefined` type annotations for better type narrowing and null safety
 
 ## [1.9.1](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.9.1) - 2025-10-03
 
 ### Changed
+
 - Disabled TypeScript declaration map generation to reduce package size
 
 ## [1.9.0](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.9.0) - 2025-10-03
 
 ### Changed
+
 - **BREAKING**: Improved `SocketSdkResult` type compatibility - success and error results now have symmetric properties (`data`, `error`, `cause`) with explicit `undefined` types for better TypeScript narrowing
 - **BREAKING**: Removed `CResult` type (CLI-specific) in favor of SDK-appropriate `SocketSdkGenericResult` type for `getApi()` and `sendApi()` methods
 - Updated `getApi()` and `sendApi()` to use `SocketSdkGenericResult` with consistent HTTP status codes instead of CLI exit codes
 - All result types now use `success` discriminant with `status` (HTTP code), `data`, `error`, and `cause` properties on both branches
 
 ### Migration Guide
+
 - If using `getApi()` or `sendApi()` with `throws: false`, update from `CResult` to `SocketSdkGenericResult`
 - Change `.ok` checks to `.success`
 - Change `.code` to `.status` (now contains HTTP status code)
@@ -475,11 +780,13 @@ To migrate from v1.x to v2.0:
 ## [1.8.6](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.8.6) - 2025-10-02
 
 ### Changed
+
 - Reduced package size by excluding source map files (.js.map) from published package
 
 ## [1.8.5](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.8.5) - 2025-10-02
 
 ### Changed
+
 - Synced with OpenAPI definition
 - Added new `/openapi.json` endpoint for retrieving API specification in JSON format
 - Updated repo label filter descriptions to document empty string ("") usage for repositories with no labels
@@ -488,37 +795,44 @@ To migrate from v1.x to v2.0:
 ## [1.8.4](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.8.4) - 2025-10-01
 
 ### Fixed
+
 - Fixed registry constant import paths to use correct casing (SOCKET_PUBLIC_API_TOKEN, UNKNOWN_ERROR)
 
 ## [1.8.3](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.8.3) - 2025-09-30
 
 ### Changed
+
 - Synced with OpenAPI definition
 
 ## [1.8.2](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.8.2) - 2025-09-29
 
 ### Fixed
+
 - Fixed publishing workflow to ensure dist folder is built before npm publish
 - Changed prepublishOnly script to prevent accidental local publishing
 
 ## [1.8.1](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.8.1) - 2025-09-29
 
 ### Changed
+
 - Update test infrastructure and build configuration
 
 ## [1.8.0](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.8.0) - 2025-09-27
 
 ### Added
+
 - Quota utility functions for API cost management in `quota-utils.ts`
 - New exported functions: `checkQuota`, `formatQuotaReport`, `getEstimatedCost`, `getMethodCost`, `getQuotaSummary`, `isWithinQuota`
 - Example files demonstrating quota usage patterns
 
 ### Changed
+
 - Improved error handling for quota utilities
 
 ## [1.7.0](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.7.0) - 2025-09-26
 
 ### Added
+
 - `getApi` method for raw GET requests with configurable response handling
 - `sendApi` method for POST/PUT requests with JSON body support
 - `CResult` type pattern for non-throwing API operations
@@ -538,6 +852,7 @@ To migrate from v1.x to v2.0:
 - Additional coverage tests for invalid JSON line handling in NDJSON streams
 
 ### Changed
+
 - Improved error message formatting and JSON parsing error handling
 - Enhanced type safety with better generic constraints
 - Renamed option types to `GetOptions` and `SendOptions` for consistency
@@ -552,169 +867,203 @@ To migrate from v1.x to v2.0:
 ## [1.6.1](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.6.1) - 2025-09-24
 
 ### Changed
+
 - Updated to use trusted publisher for npm package provenance
 
 ## [1.6.0](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.6.0) - 2025-09-24
 
 ### Changed
+
 - **BREAKING:** Converted to single CommonJS export type, removing dual ESM/CJS support
 
 ## [1.5.1](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.5.1) - 2025-09-24
 
 ### Fixed
+
 - Added missing setup-script to provenance workflow
 
 ## [1.5.0](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.5.0) - 2025-09-23
 
 ### Added
+
 - `getOrgFullScanBuffered` method for buffered full scan retrieval
 
 ### Changed
+
 - **BREAKING:** Renamed `getOrgFullScan` to `streamOrgFullScan` for clarity
 
 ### Fixed
+
 - Added missing `getResponseJson` call to `createScanFromFilepaths`
 - Improved handling of empty response bodies
 
 ## [1.4.93](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.4.93) - 2025-09-15
 
 ### Fixed
+
 - Fixed malformed part header issue for upload of manifest files
 
 ## [1.4.91](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.4.91) - 2025-09-11
 
 ### Changed
+
 - Improved URL handling
 
 ## [1.4.90](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.4.90) - 2025-09-11
 
 ### Fixed
+
 - Improved error handling
 
 ## [1.4.84](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.4.84) - 2025-09-03
 
 ### Added
+
 - Filter alerts by action
 
 ### Changed
+
 - Improved JSON parsing
 
 ## [1.4.82](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.4.82) - 2025-09-02
 
 ### Changed
+
 - Improved public policy handling
 
 ## [1.4.81](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.4.81) - 2025-09-02
 
 ### Added
+
 - Add public security policy support
 
 ## [1.4.79](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.4.79) - 2025-08-27
 
 ### Fixed
+
 - Fixed ESM module compatibility
 
 ## [1.4.77](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.4.77) - 2025-08-25
 
 ### Added
+
 - Add timeout option for API requests
 
 ## [1.4.73](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.4.73) - 2025-08-08
 
 ### Fixed
+
 - Fixed crates ecosystem support
 
 ## [1.4.72](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.4.72) - 2025-08-08
 
 ### Fixed
+
 - Fixed rubygems ecosystem support
 
 ## [1.4.71](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.4.71) - 2025-08-08
 
 ### Added
+
 - Support for crate and rubygem ecosystems
 
 ## [1.4.68](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.4.68) - 2025-08-02
 
 ### Changed
+
 - Improved type definitions
 - Memory usage optimizations
 
 ## [1.4.66](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.4.66) - 2025-07-29
 
 ### Fixed
+
 - Fixed file upload timing issue
 - Fixed multipart form data formatting
 
 ## [1.4.64](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.4.64) - 2025-07-22
 
 ### Changed
+
 - Improved method signatures
 
 ## [1.4.62](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.4.62) - 2025-07-21
 
 ### Fixed
+
 - Fixed query parameter handling for empty values
 
 ## [1.4.61](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.4.61) - 2025-07-21
 
 ### Changed
+
 - Improved query parameter normalization
 
 ## [1.4.60](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.4.60) - 2025-07-21
 
 ### Changed
+
 - Renamed result type for clarity
 
 ## [1.4.59](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.4.59) - 2025-07-20
 
 ### Added
+
 - Add alias types for improved developer experience
 
 ## [1.4.0](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.4.0) - 2025-05-01
 
 ### Added
+
 - Full scans feature support
 - Audit log and repos features
 - Organization security policy support (getOrgSecurityPolicy)
 
 ### Changed
+
 - Improved TypeScript type exports
 - Enhanced ESM and CJS dual package support
 
 ## [1.3.0](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.3.0) - 2025-03-01
 
 ### Added
+
 - Support for multiple ecosystem types
 - Enhanced error handling and reporting
 
 ### Changed
+
 - Improved API client architecture
 - Better TypeScript type definitions
 
 ## [1.2.0](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.2.0) - 2025-01-15
 
 ### Added
+
 - File upload support for manifest files
 - Request body creation for file paths
 
 ### Changed
+
 - Enhanced multipart form data handling
 - Improved streaming support
 
 ## [1.1.0](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.1.0) - 2024-11-01
 
 ### Added
+
 - Query parameter normalization
 - Enhanced search parameter handling
 
 ### Changed
+
 - Improved URL parsing and handling
 - Better error messages
 
 ## [1.0.0](https://github.com/SocketDev/socket-sdk-js/releases/tag/v1.0.0) - 2024-09-01
 
 ### Added
+
 - Initial release of Socket SDK for JavaScript
 - Full Socket API client implementation
 - TypeScript support with comprehensive type definitions

@@ -1,12 +1,16 @@
 {
-  "extends": "./.config/tsconfig.base.json",
+  "extends": "./.config/fleet/tsconfig.base.json",
   "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "declarationMap": false,
     "module": "esnext",
     "moduleResolution": "bundler",
+    "noEmit": true,
+    "noPropertyAccessFromIndexSignature": false,
     "outDir": "./dist",
     "rootDir": "./src",
-    "noPropertyAccessFromIndexSignature": false,
-    "noEmit": true
+    "sourceMap": false,
+    "types": ["node"]
   },
-  "include": ["src/**/*.ts"]
+  "include": ["./src/**/*.mts", "./src/**/*.ts"]
 }

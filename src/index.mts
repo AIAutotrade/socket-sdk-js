@@ -1,0 +1,219 @@
+/**
+ * @file Main entry point for the Socket SDK. Provides the SocketSdk class and
+ *   utility functions for Socket security analysis API interactions.
+ */
+
+/* c8 ignore start - Re-export module, no testable logic */
+// Re-export the content-addressed blob helpers (socketusercontent.com).
+export { SdkAuthenticationError } from './auth.mts'
+
+export {
+  fetchBlob,
+  fetchChunkedBytes,
+  fetchRawBytes,
+  tryDecodeText,
+} from './blob.mts'
+export type {
+  BlobResult,
+  ChunkedFetchResult,
+  FetchBlobOptions,
+  RawFetchResult,
+} from './blob.mts'
+// Re-export the v1 content-addressed full-scan and blob-upload primitives.
+export {
+  assembleManifest,
+  deriveApiV1BaseUrl,
+  hashFile,
+} from './full-scans-v1.mts'
+export type {
+  AssembledManifest,
+  BlobRef,
+  BlobUploadEntry,
+  BlobsUploadData,
+  CreateFullScanFromManifestParams,
+  CreateFullScanFromManifestResult,
+  FileHashResult,
+  FullScanManifest,
+  FullScanManifestEntry,
+  FullScanV1CreatedData,
+  FullScanV1PendingData,
+  ManifestLocalEntry,
+  SkippedManifestPath,
+  UploadBlobsResult,
+} from './full-scans-v1.mts'
+// Re-export types for the v1 events endpoint.
+export type {
+  PostEventsData,
+  PostEventsResult,
+  SocketEvent,
+} from './events-v1.mts'
+export type {
+  PostOrgPackageChecksBody,
+  PostOrgPackageChecksData,
+  PostOrgPackageChecksResult,
+  PostOrgPackageSummariesBody,
+  PostOrgPackageSummariesData,
+  PostOrgPackageSummariesResult,
+} from './package-intelligence-v1.mts'
+// Re-export types for the v1 threat-campaigns endpoints.
+export type {
+  GetThreatCampaignResult,
+  ListThreatCampaignPackagesOptions,
+  ListThreatCampaignPackagesResult,
+  ListThreatCampaignsOptions,
+  ListThreatCampaignsResult,
+  ThreatCampaign,
+  ThreatCampaignPackagesData,
+  ThreatCampaignStatus,
+  ThreatCampaignsListData,
+} from './threat-campaigns-v1.mts'
+// Re-export HTTP client classes.
+export { ResponseError } from './http-client.mts'
+// Re-export quota utility functions.
+export {
+  calculateTotalQuotaCost,
+  getAllMethodRequirements,
+  getMethodRequirements,
+  getMethodsByPermissions,
+  getMethodsByQuotaCost,
+  getQuotaCost,
+  getQuotaUsageSummary,
+  getRequiredPermissions,
+  hasQuotaForMethods,
+} from './quota-utils.mts'
+// Re-export the main SocketSdk class.
+export { SocketSdk } from './socket-sdk-class.mts'
+// Re-export option/response types for the newer endpoint methods.
+export type {
+  CreateOrgRepoDiffOptions,
+  GetOrgFullScanCsvOptions,
+  GetOrgFullScanPdfOptions,
+  HistoricalAlertsListOptions,
+  HistoricalAlertsTrendOptions,
+  HistoricalDependenciesTrendOptions,
+  HistoricalSnapshotsListOptions,
+  LicensePolicyViolations,
+  UpdateOrgRepoLabelSettingBody,
+} from './types/parity.mts'
+// Re-export patch-domain types.
+export type {
+  ArtifactPatches,
+  GetPatchPackagesResponse,
+  LookupPatchPackageResponse,
+  PatchesBatchResponse,
+  PatchFile,
+  PatchPackageStatsResponse,
+  PatchRecord,
+  PatchRecordsResponse,
+  PatchSearchResponse,
+  PatchViewResponse,
+  SecurityAlert,
+  Vulnerability,
+} from './types/patches.mts'
+// Re-export types from modules.
+export type {
+  ALERT_ACTION,
+  ALERT_TYPE,
+  BatchPackageFetchResultType,
+  BatchPackageStreamOptions,
+  CompactSocketArtifact,
+  CompactSocketArtifactAlert,
+  CreateDependenciesSnapshotOptions,
+  CustomResponseType,
+  Entitlement,
+  EntitlementsResponse,
+  FileValidationCallback,
+  FileValidationResult,
+  GetOptions,
+  HeadersRecord,
+  MalwareCheckAlert,
+  MalwareCheckPackage,
+  MalwareCheckResult,
+  MalwareCheckScore,
+  TelemetryConfig,
+  PostOrgTelemetryPayload,
+  PostOrgTelemetryResponse,
+  QueryParams,
+  RequestInfo,
+  RequestOptions,
+  RequestOptionsWithHooks,
+  ResponseInfo,
+  SendMethod,
+  SendOptions,
+  SocketArtifact,
+  SocketArtifactAlert,
+  SocketArtifactWithExtras,
+  SocketId,
+  SocketMetricSchema,
+  SocketSdkArrayElement,
+  SocketSdkData,
+  SocketSdkErrorResult,
+  SocketSdkGenericResult,
+  SocketSdkOperations,
+  SocketSdkAuthProvider,
+  SocketSdkOptions,
+  SocketSdkResult,
+  SocketSdkSuccessResult,
+  StreamOrgFullScanOptions,
+  UploadManifestFilesError,
+  UploadManifestFilesOptions,
+  UploadManifestFilesResponse,
+  UploadManifestFilesReturnType,
+} from './types/core.mts'
+// Re-export strict types for v3 API.
+export type {
+  CreateFullScanOptions,
+  DeleteRepositoryLabelResult,
+  DeleteResult,
+  FullScanItem,
+  FullScanListData,
+  FullScanListResult,
+  FullScanResult,
+  GetRepositoryOptions,
+  ListFullScansOptions,
+  ListRepositoriesOptions,
+  OrganizationItem,
+  OrganizationsResult,
+  RepositoriesListData,
+  RepositoriesListResult,
+  RepositoryItem,
+  RepositoryLabelItem,
+  RepositoryLabelResult,
+  RepositoryLabelsListData,
+  RepositoryLabelsListResult,
+  RepositoryListItem,
+  RepositoryResult,
+  StreamFullScanOptions,
+  StrictErrorResult,
+  StrictResult,
+} from './types/strict.mts'
+// Re-export functions from modules.
+export { createUserAgentFromPkgJson } from './user-agent.mts'
+/* c8 ignore stop */
+
+export { SocketPurlClient } from './public-purl-client.mts'
+export { SocketPatchClient } from './public-patches-client.mts'
+export type { SocketPatchClientOptions } from './public-patches-client.mts'
+export { SocketPublicMalwareClient } from './public-malware-client.mts'
+export type {
+  PublicMalwareCoverage,
+  PublicMalwareFinding,
+  PublicMalwareReasonCode,
+  PublicMalwareRequest,
+  PublicMalwareResponse,
+  PublicMalwareResult,
+  SocketPublicMalwareClientOptions,
+} from './types/public-malware.mts'
+export type * from './types/alert-policies.mts'
+export type * from './types/fixes.mts'
+export type * from './types/full-scan-results-v1.mts'
+export type * from './types/malware.mts'
+export type * from './types/purl.mts'
+export type {
+  PurlVersionEntry,
+  PurlVersionsData,
+  PurlVersionsOptions,
+} from './purl-versions-v1.mts'
+
+export type { SocketSdkHttpResponse } from './types/http.mts'
+export type { SocketSdkJsonValue } from './types/util.mts'

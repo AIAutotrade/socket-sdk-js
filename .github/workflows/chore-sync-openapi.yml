@@ -1,0 +1,156 @@
+name: 'chore: sync openapi'
+run-name: 'chore: sync v0 and v1 contracts'
+
+on:
+  push:
+    paths:
+      - '.github/workflows/chore-sync-openapi.yml'
+      - 'scripts/repo/generate-*.mts'
+      - 'scripts/repo/openapi-contracts.mts'
+      - 'scripts/repo/check/api-contracts-are-current.mts'
+      - 'scripts/repo/package-artifact-is-complete.mts'
+      - 'types/api-helpers.d.ts'
+  schedule:
+    - cron: '23 7 * * 1-5'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  fetch_and_update:
+    name: Sync v0 and v1 contracts
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-26.04
+    permissions:
+      actions: write
+      contents: read
+    steps:
+      - name: Bootstrap checkout
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          SERVER_URL: ${{ github.server_url }}
+          REPOSITORY: ${{ github.repository }}
+          TRIGGER_REF: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git init -q
+          git config --local advice.detachedHead false
+          git remote remove origin 2>/dev/null || true
+          git remote add origin "${SERVER_URL}/${REPOSITORY}"
+          AUTH_B64="$(printf 'x-access-token:%s' "${GITHUB_TOKEN}" | base64 | tr -d '\n')"
+          git -c "http.${SERVER_URL}/.extraheader=AUTHORIZATION: basic ${AUTH_B64}" \
+            fetch --no-tags --prune --depth 1 origin "${TRIGGER_REF}"
+          git checkout -q --detach FETCH_HEAD
+          test "$(git rev-parse HEAD)" = "${TRIGGER_REF}"
+      - name: Set up and install
+        uses: ./.github/actions/fleet/setup-and-install
+        with:
+          checkout: 'false'
+          payload-token-client-id: ${{ secrets.SOCKET_RELEASE_CLIENT_ID || vars.SOCKET_RELEASE_CLIENT_ID }}
+          payload-token-private-key: ${{ secrets.SOCKET_RELEASE_APP_PRIVATE_KEY }}
+          socket-api-token: ${{ secrets.SOCKET_API_TOKEN_FOR_CLI_AND_SFW }}
+      - name: Set up commit signing
+        uses: ./.github/actions/fleet/setup-git-signing
+        with:
+          gpg-private-key: ${{ secrets.BOT_GPG_PRIVATE_KEY }}
+
+      - name: Generate both contracts
+        run: |
+          pnpm --silent run generate-sdk --list-artifacts > "$RUNNER_TEMP/openapi-artifacts.txt"
+          pnpm run generate-sdk
+
+      - name: Verify generated contracts
+        run: |
+          pnpm run check:api-contracts
+          pnpm run type
+          pnpm test test/repo/unit/generate-sdk.test.mts test/repo/unit/openapi-response-types.test.mts test/repo/integration/openapi-multipart.test.mts
+          pnpm run check:quota-sync
+          pnpm run build
+          pnpm run check:package-artifact
+
+      - name: Check generated artifacts for changes
+        id: check
+        run: |
+          mapfile -t artifact_paths < "$RUNNER_TEMP/openapi-artifacts.txt"
+          if [ -n "$(git status --porcelain -- "${artifact_paths[@]}")" ]; then
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Mint branch token
+        if: steps.check.outputs.has_changes == 'true'
+        id: openapi-branch
+        uses: ./.github/actions/fleet/github-pr-branch-app-token
+        with:
+          client-id: ${{ secrets.SOCKET_PR_CLIENT_ID || vars.SOCKET_PR_CLIENT_ID }}
+          private-key: ${{ secrets.SOCKET_PR_APP_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+
+      - name: Commit and push generated artifacts
+        if: steps.check.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ steps.openapi-branch.outputs.token }}
+        run: |
+          mapfile -t artifact_paths < "$RUNNER_TEMP/openapi-artifacts.txt"
+          git switch --create automated/open-api
+          git add -- "${artifact_paths[@]}"
+          git commit -m "fix(openapi): sync v0 and v1 contracts"
+          previous_head="$(git -c credential.helper='!gh auth git-credential' ls-remote origin refs/heads/automated/open-api | cut -f1)"
+          git -c credential.helper='!gh auth git-credential' push \
+            --force-with-lease="refs/heads/automated/open-api:$previous_head" \
+            origin HEAD:refs/heads/automated/open-api
+
+      - name: Mint PR token
+        if: steps.check.outputs.has_changes == 'true'
+        id: openapi-app
+        uses: ./.github/actions/fleet/github-pr-app-token
+        with:
+          client-id: ${{ secrets.SOCKET_PR_CLIENT_ID || vars.SOCKET_PR_CLIENT_ID }}
+          private-key: ${{ secrets.SOCKET_PR_APP_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+
+      - name: Create or update pull request
+        if: steps.check.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ steps.openapi-app.outputs.token }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          cat > "$RUNNER_TEMP/openapi-pr-body.md" <<'BODY'
+          Synchronizes the v0 and v1 OpenAPI snapshots and generated TypeScript contracts.
+          The v0 strict types and strict type exports follow the same generation pass.
+
+          Validation: offline contract freshness, TypeScript, generator tests, quota synchronization, build, and packed declaration imports.
+          BODY
+          existing_pr="$(gh pr list --head automated/open-api --base "$DEFAULT_BRANCH" --json number --jq '.[0].number // empty')"
+          if [ -z "$existing_pr" ]; then
+            gh pr create \
+              --head automated/open-api \
+              --base "$DEFAULT_BRANCH" \
+              --title "fix(openapi): sync v0 and v1 contracts" \
+              --body-file "$RUNNER_TEMP/openapi-pr-body.md" \
+              --label dependencies \
+              --label automated
+          else
+            gh pr edit "$existing_pr" \
+              --title "fix(openapi): sync v0 and v1 contracts" \
+              --body-file "$RUNNER_TEMP/openapi-pr-body.md"
+          fi
+
+      - name: Trigger CI checks
+        if: steps.check.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run ci-gates.yml --ref automated/open-api
+
+      - name: Clean up commit signing
+        uses: ./.github/actions/fleet/cleanup-git-signing
+        if: always()
